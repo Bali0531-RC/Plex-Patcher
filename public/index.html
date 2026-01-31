@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plexdev - Patcher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 Plexdev - Patcher</h1>
+            <p class="subtitle">Utility Tools for PlexDevelopment Products</p>
+            <p class="author">Community Member & Moderator Tools</p>
+        </header>
+
+        <main>
+            <section class="patch-card">
+                <div class="card-header">
+                    <h2>📊 Dashboard Database Fixer</h2>
+                    <span class="badge">Patch #1</span>
+                </div>
+                
+                <div class="card-body">
+                    <p class="description">
+                        Fixes dashboard table issues in MongoDB when configuration updates don't sync properly. 
+                        This tool allows you to view and update your dashboard configuration directly in the database.
+                    </p>
+
+                    <!-- Connection Section -->
+                    <div class="section" id="connectionSection">
+                        <h3>1. Connect to Database</h3>
+                        <div class="input-group">
+                            <label for="mongoUri">MongoDB Connection URI:</label>
+                            <input 
+                                type="text" 
+                                id="mongoUri" 
+                                placeholder="mongodb://localhost:27017/your-database" 
+                                autocomplete="off"
+                            />
+                            <small>Example: mongodb://localhost:27017/plexdev or mongodb+srv://user:pass@cluster.mongodb.net/dbname</small>
+                        </div>
+                        <button id="connectBtn" class="btn btn-primary">
+                            <span class="btn-icon">🔌</span> Connect to Database
+                        </button>
+                        <div id="connectionStatus" class="status-message"></div>
+                    </div>
+
+                    <!-- Dashboard Display Section -->
+                    <div class="section hidden" id="dashboardSection">
+                        <h3>2. Dashboard Configuration</h3>
+                        <div id="dashboardCount" class="info-box"></div>
+                        
+                        <div id="dashboardForm" class="hidden">
+                            <div class="alert alert-info">
+                                ⚠️ Please make sure all 3 values are correct and up to date before saving.
+                            </div>
+                            
+                            <input type="hidden" id="dashboardId" />
+                            
+                            <div class="input-group">
+                                <label for="guildID">Guild ID:</label>
+                                <input 
+                                    type="text" 
+                                    id="guildID" 
+                                    placeholder="1438360789655486557"
+                                />
+                            </div>
+
+                            <div class="input-group">
+                                <label for="url">URL:</label>
+                                <input 
+                                    type="text" 
+                                    id="url" 
+                                    placeholder="http://150.241.203.34:8000"
+                                />
+                            </div>
+
+                            <div class="input-group">
+                                <label for="port">Port:</label>
+                                <input 
+                                    type="text" 
+                                    id="port" 
+                                    placeholder="8000"
+                                />
+                            </div>
+
+                            <button id="saveBtn" class="btn btn-success">
+                                <span class="btn-icon">💾</span> Save Changes
+                            </button>
+                            <div id="saveStatus" class="status-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ for the bali0531</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

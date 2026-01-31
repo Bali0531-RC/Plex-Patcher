@@ -1,0 +1,18 @@
+{
+  "name": "plexdev-patcher",
+  "version": "1.0.0",
+  "description": "Plexdev - Patcher utility site for fixing common issues",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["plex", "utility", "patcher", "mongodb"],
+  "author": "bali0531",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "cors": "^2.8.5"
+  }
+}
