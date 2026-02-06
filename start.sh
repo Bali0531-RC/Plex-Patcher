@@ -43,7 +43,7 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "✅ Plexdev Patcher is now running!"
     echo ""
-    echo "🌐 Service is running on: http://127.0.0.1:3313"
+    echo "🌐 Service is running on: http://127.0.0.1:3318"
     echo "   Configure your nginx to proxy to this address"
     echo ""
     echo "📋 Useful commands:"

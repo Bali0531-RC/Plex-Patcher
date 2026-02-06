@@ -32,10 +32,10 @@ docker-compose up -d
 
 4. The application will be available at:
 ```
-http://localhost:3313
+http://localhost:3318
 ```
 
-   **Note:** The service runs on `127.0.0.1:3313` and is intended to be proxied through your local nginx.
+   **Note:** The service runs on `127.0.0.1:3318` and is intended to be proxied through your local nginx.
 
 5. Stop the application:
 ```bash
@@ -62,7 +62,7 @@ http://localhost:3000
 ## Usage
 
 1. Open the application in your browser:
-   - Docker (via nginx proxy): Configure your nginx to proxy to http://127.0.0.1:3313
+   - Docker (via nginx proxy): Configure your nginx to proxy to http://127.0.0.1:3318
    - Local: http://localhost:3000
 
 2. Follow the on-screen instructions:
@@ -113,7 +113,7 @@ docker-compose down
 ### Nginx Configuration Example
 ```nginx
 location /patcher/ {
-    proxy_pass http://127.0.0.1:3313/;
+    proxy_pass http://127.0.0.1:3318/;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection 'upgrade';
