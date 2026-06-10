@@ -18,6 +18,12 @@ const saveStatus = document.getElementById('saveStatus');
 // State
 let isConnected = false;
 
+// Update a button's label without touching its icon
+function setBtnLabel(btn, label) {
+    const labelEl = btn.querySelector('.btn-label');
+    if (labelEl) labelEl.textContent = label;
+}
+
 // Show status message
 function showStatus(element, message, type) {
     element.textContent = message;
@@ -32,12 +38,12 @@ connectBtn.addEventListener('click', async () => {
     const uri = mongoUri.value.trim();
     
     if (!uri) {
-        showStatus(connectionStatus, '❌ Please enter a MongoDB URI', 'error');
+        showStatus(connectionStatus, 'Please enter a MongoDB URI', 'error');
         return;
     }
     
     connectBtn.disabled = true;
-    connectBtn.textContent = '⏳ Connecting...';
+    setBtnLabel(connectBtn, 'Connecting…');
     
     try {
         const response = await fetch(`${API_URL}/api/connect`, {
@@ -52,21 +58,21 @@ connectBtn.addEventListener('click', async () => {
         
         if (response.ok) {
             isConnected = true;
-            showStatus(connectionStatus, '✅ ' + data.message, 'success');
-            connectBtn.textContent = '✅ Connected';
-            connectBtn.style.background = '#4caf50';
+            showStatus(connectionStatus, data.message, 'success');
+            setBtnLabel(connectBtn, 'Connected');
+            connectBtn.classList.add('connected');
             
             // Load dashboards
             await loadDashboards();
         } else {
-            showStatus(connectionStatus, '❌ ' + (data.error || 'Connection failed'), 'error');
+            showStatus(connectionStatus, data.error || 'Connection failed', 'error');
             connectBtn.disabled = false;
-            connectBtn.innerHTML = '<span class="btn-icon">🔌</span> Connect to Database';
+            setBtnLabel(connectBtn, 'Connect to Database');
         }
     } catch (error) {
-        showStatus(connectionStatus, '❌ Connection failed: ' + error.message, 'error');
+        showStatus(connectionStatus, 'Connection failed: ' + error.message, 'error');
         connectBtn.disabled = false;
-        connectBtn.innerHTML = '<span class="btn-icon">🔌</span> Connect to Database';
+        setBtnLabel(connectBtn, 'Connect to Database');
     }
 });
 
@@ -77,7 +83,7 @@ async function loadDashboards() {
         const data = await response.json();
         
         if (!response.ok) {
-            showStatus(connectionStatus, '❌ ' + (data.error || 'Failed to load dashboards'), 'error');
+            showStatus(connectionStatus, data.error || 'Failed to load dashboards', 'error');
             return;
         }
         
@@ -87,7 +93,7 @@ async function loadDashboards() {
         if (data.count === 0) {
             dashboardCount.innerHTML = `
                 <div class="alert alert-info">
-                    ℹ️ No dashboard records found in the database.
+                    No dashboard records found in the database.
                 </div>
             `;
             dashboardForm.classList.add('hidden');
@@ -95,8 +101,8 @@ async function loadDashboards() {
             // Single record - show form
             const dashboard = data.dashboards[0];
             dashboardCount.innerHTML = `
-                <div style="color: var(--accent-success); font-weight: 600;">
-                    ✅ Found 1 dashboard record
+                <div class="record-found">
+                    Found 1 dashboard record
                 </div>
             `;
             
@@ -111,12 +117,12 @@ async function loadDashboards() {
             // Multiple records
             dashboardCount.innerHTML = `
                 <div class="alert alert-info">
-                    ⚠️ Found ${data.count} dashboard records in the database.
+                    Found ${data.count} dashboard records in the database.
                     <br><br>
                     <strong>Records:</strong>
-                    <ul style="margin-top: 10px; margin-left: 20px;">
+                    <ul class="record-list">
                         ${data.dashboards.map(d => `
-                            <li style="margin-bottom: 10px;">
+                            <li class="record-item">
                                 <strong>ID:</strong> ${d._id}<br>
                                 <strong>Guild ID:</strong> ${d.guildID || 'N/A'}<br>
                                 <strong>URL:</strong> ${d.url || 'N/A'}<br>
@@ -125,13 +131,13 @@ async function loadDashboards() {
                         `).join('')}
                     </ul>
                     <br>
-                    <em>💡 Multiple records detected. Please manually clean up your database to have only one dashboard record, then reconnect.</em>
+                    <em>Multiple records detected. Please manually clean up your database to keep only one dashboard record, then reconnect.</em>
                 </div>
             `;
             dashboardForm.classList.add('hidden');
         }
     } catch (error) {
-        showStatus(connectionStatus, '❌ Failed to load dashboards: ' + error.message, 'error');
+        showStatus(connectionStatus, 'Failed to load dashboards: ' + error.message, 'error');
     }
 }
 
@@ -143,12 +149,12 @@ saveBtn.addEventListener('click', async () => {
     const port = portInput.value.trim();
     
     if (!guildID || !url || !port) {
-        showStatus(saveStatus, '❌ Please fill in all fields', 'error');
+        showStatus(saveStatus, 'Please fill in all fields', 'error');
         return;
     }
     
     saveBtn.disabled = true;
-    saveBtn.textContent = '⏳ Saving...';
+    setBtnLabel(saveBtn, 'Saving…');
     
     try {
         const response = await fetch(`${API_URL}/api/dashboards/${id}`, {
@@ -162,17 +168,14 @@ saveBtn.addEventListener('click', async () => {
         const data = await response.json();
         
         if (response.ok) {
-            showStatus(saveStatus, '✅ Dashboard updated successfully!', 'success');
-            saveBtn.innerHTML = '<span class="btn-icon">💾</span> Save Changes';
-            saveBtn.disabled = false;
+            showStatus(saveStatus, 'Dashboard updated successfully', 'success');
         } else {
-            showStatus(saveStatus, '❌ ' + (data.error || 'Failed to save changes'), 'error');
-            saveBtn.innerHTML = '<span class="btn-icon">💾</span> Save Changes';
-            saveBtn.disabled = false;
+            showStatus(saveStatus, data.error || 'Failed to save changes', 'error');
         }
     } catch (error) {
-        showStatus(saveStatus, '❌ Failed to save: ' + error.message, 'error');
-        saveBtn.innerHTML = '<span class="btn-icon">💾</span> Save Changes';
+        showStatus(saveStatus, 'Failed to save: ' + error.message, 'error');
+    } finally {
+        setBtnLabel(saveBtn, 'Save Changes');
         saveBtn.disabled = false;
     }
 });
